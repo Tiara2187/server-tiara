@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node servers.js",
     "test": "jest --watchAll",
     "dev-js": "env-cmd ./env/dev.env nodemon servers.js",
     "dev-ts": "env-cmd ./env/dev.env ts-node-dev --respawn --pretty --transpile-only servers.ts"
