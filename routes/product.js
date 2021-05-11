@@ -31,8 +31,8 @@ const storage = multer.diskStorage({
     router.post('/product',uploads.single('image'),ProductController.createProduct) 
     router.post('/createproduct',ProductController.createProduct)
     router.get('/listproduct',ProductController.listProduct)
-    router.get('/detailproduct/:productId',ProductController.getOneProduct) 
-    router.get('/product/category/:categoryId',ProductController.getCategory)
+    router.get('/product-detail/:productId',ProductController.getOneProduct) 
+    router.get('/product/category/:categoryID',ProductController.getCategory)
 
 
 

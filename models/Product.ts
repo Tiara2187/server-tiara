@@ -5,7 +5,7 @@ interface IProduct extends mongoose.Document
     productname : string,
     productprice: string,
     productimage : string,
-    _categoryId : mongoose.Schema.Types.ObjectId,
+    category : mongoose.Schema.Types.ObjectId, ref: 'Category',
     description : string,
     preview : string,
     color : string,
@@ -18,7 +18,7 @@ interface IProductDoc extends mongoose.Document
     productname : string,
     productprice: string,
     productimage : string,
-    _categoryId : mongoose.Schema.Types.ObjectId,
+    category : mongoose.Schema.Types.ObjectId, ref: 'Category',
     description : string,
     preview : string,
     color : string,
@@ -46,7 +46,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    _categoryId:{
+    category:{
         type : Schema.Types.ObjectId, ref: 'Category',
         required: true
 

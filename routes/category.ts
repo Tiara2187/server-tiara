@@ -12,7 +12,7 @@ class Category {
 
         this.router.post('/category/create', CategoryController.createCategory)
         this.router.get('/category/detailcategory/:id',CategoryController.getCategory)
-        this.router.get('/category/listcategory', CategoryController.listCategory)
+        this.router.get('/category', CategoryController.listCategory)
   
     }
 }

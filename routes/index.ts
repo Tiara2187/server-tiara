@@ -18,7 +18,7 @@ class Index {
     public index():void{
         this.router.use('/users', userRoutes)
         this.router.use('/users', categoryRoutes)
-        this.router.use('/users', productRoutes)
+        this.router.use('/product', productRoutes)
         this.router.use('/users', cartRoutes)
         this.router.use('/users', checkoutRoutes)
         this.router.use('/users', addressRoutes)

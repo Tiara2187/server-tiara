@@ -77,6 +77,6 @@ server.on("error", onError);
 server.on("listening", onListening);
 
 servers.listen(port, () => {
-  console.log(`App runs on http://localhost:${port}`);
+  console.log(`App runs on https://servertiara.herokuapp.com`);
 });
 

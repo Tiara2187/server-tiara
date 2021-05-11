@@ -3,9 +3,9 @@ const Category = require('../models/Category')
 class CategoryController {
 
 static async getCategory(req,res,next) {
-    const {id} = req.params
+    const {categoryID} = req.params
     try{
-        const category = await Category.findById(id)
+        const category = await Category.findById(categoryID)
         res.status(200).json({success : true, data : category})
     }
     catch (any) { next({name: 'NOT_FOUND'})}
