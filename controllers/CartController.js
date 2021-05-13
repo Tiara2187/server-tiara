@@ -85,10 +85,19 @@ class CartController {
         catch { next({ name : 'PRODUCT_NOT_FOUND'})}
     }
 
-    static async deleteCart(req, res, next)
-    {
-        await Cart.deleteOne({ cartId: req.params.cartId})
-        res.status(200).send({ success: true, message: 'Success Delete Cart' })
+    static async deleteCart(req, res, next) {
+        const { cartID } = req.params
+        const cart = await Cart.findById(cartID)
+        const product = await Product.findById(cart.product)
+        try {
+            if (cart.user != req._userId) next({ name: 'INVALID_TOKEN' })
+            else {
+                await Cart.findByIdAndDelete(cartID)
+                await Product.findByIdAndUpdate(cart.product, {$set : {quantity : product.quantity + cart.quantity } })
+                res.status(200).json({ success: true, message: 'delete success' })
+            }
+        }
+        catch (e) { next({ name: 'PRODUCT_NOT_FOUND' }) }
     }
 
     static async deleteOneCart(req, res, next){

@@ -86,12 +86,6 @@ class CartController {
         catch { next({ name : 'PRODUCT_NOT_FOUND'})}
     }
 
-    static async deleteCart(req: Request, res: Response, next: NextFunction)
-    {
-        await Cart.deleteOne({ cartId: req.params.cartId})
-        res.status(200).send({ success: true, message: 'Success Delete Cart' })
-    }
-
     static async deleteOneCart(req: Request, res: Response, next: NextFunction){
         const {productId} = req.params
         const product = await Product.findById(productId)

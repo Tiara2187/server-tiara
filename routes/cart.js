@@ -8,6 +8,6 @@ const UserAuth = require('../helpers/authentication')
         router.get('/detailcart/:cartId', UserAuth, CartController.getDetailCart)
         router.get('/addonecart/:productId', UserAuth, CartController.addOneCart)
         router.delete('/deleteonecart/:productId', UserAuth, CartController.deleteOneCart)
-        router.delete('/deletecart/:cartId', UserAuth, CartController.deleteCart)
+        router.delete('/deletecart/:cartID', UserAuth, CartController.deleteCart)
 
 module.exports = router

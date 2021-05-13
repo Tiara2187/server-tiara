@@ -11,20 +11,20 @@ class UserController {
             })
             .catch(next)
     }
+
     static login(req, res, next) {
         const { email, password } = req.body
-
-        User.findOne({ email })
-            .then(async (data) => {
-                const isTrue = await bcrypt.compare(password, data.password)
-                if (data && isTrue) {
-                    const load = { id: data.id }
-                    const token = jwt.sign(load, process.env.SECRET_KEY)
-                    if (!token) next({ name: 'NOT_FOUND' })
-                    res.status(200).send({ success: true, _id: data.id, token: token })
-                } else next({ name: 'LOGIN_FAILED' })
-            })
-            .catch(err => { next({ name: 'NOT_FOUND' }) })
+        User.findOne({ email : email })
+        .then(user => {
+            if (user && bcrypt.compareSync(password, user.password)) {
+                const token = jwt.sign({_id :  user._id}, 'ASS3STORE')
+                res.status(200).send({ success: true, user, token })
+            }
+                else if(!user) {next({name: 'NOT_FOUND'})}
+                else next({name : 'LOGIN_FAILED'})
+        })
+        .catch(e => {next({name: 'NOT_FOUND'})})
+            
     }
 
     static async getUser(req, res, next) {

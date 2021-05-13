@@ -41,7 +41,7 @@ class Servers {
 const port = 7000;
 const app = new Servers().app
 app.listen(port, () => {
-  console.log(`App runs on https://servertiara.herokuapp.com`);
+    console.log(`App runs on https://servertiara.herokuapp.com`);
 })
 
 export default app
