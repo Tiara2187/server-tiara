@@ -15,18 +15,17 @@ class UserController {
     
     static login(req: Request, res: Response, next: NextFunction) {
         const { email, password } = req.body
-    
-        User.findOne({ email })
-            .then(async (data) => {
-                const isTrue = await bcrypt.compare(password, (<any>data).password)
-                if (data && isTrue) {
-                    const load = { id: data.id }
-                    const token = jwt.sign(load, process.env.SECRET_KEY)
-                    if (!token) next({ name: 'NOT_FOUND' })
-                    res.status(200).send({ success: true, _id: data.id, token: token })
-                } else next({ name: 'LOGIN_FAILED' })
-            })
-            .catch(err => { next({ name: 'NOT_FOUND' }) })
+        User.findOne({ email : email })
+        .then(user => {
+            if (user && bcrypt.compareSync(password, user.password)) {
+                const token = jwt.sign({_id :  user._id}, 'ASS3STORE')
+                res.status(200).send({ success: true, user, token })
+            }
+                else if(!user) {next({name: 'NOT_FOUND'})}
+                else next({name : 'LOGIN_FAILED'})
+        })
+        .catch(e => {next({name: 'NOT_FOUND'})})
+            
     }
 
     static async getUser(req: Request, res: Response, next: NextFunction) {
@@ -53,8 +52,8 @@ class UserController {
         const userData = {username, firstname, lastname, password, birthdate, address}
         if(password)userData.password = await bcrypt.hashSync(userData.password,salt)
         for(let index in userData) if(!(<any>userData)[index]) delete (<any>userData)[index]
-        const { id } = req.params
-        const updateProfile = await User.findByIdAndUpdate(id, userData,{new: true})
+
+        const updateProfile = await User.findByIdAndUpdate((<any>req)._userId, userData,{new: true})
         res.status(200).json({success : true, data : updateProfile })
     }
     catch(any) { next({name: 'NOT_FOUND'})}

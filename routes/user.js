@@ -6,7 +6,7 @@ router.post('/signup',UserController.register)
 router.post('/signin',UserController.login)
 router.get('/',UserController.getUser)
 router.get('/detailuser/:id',authentication,UserController.getOneUser)
-router.put('/updateuser/:id',authentication,UserController.updateProfile)
+router.put('/updateuser',UserController.updateUser)
 router.put('/forgetpass',UserController.forgetPassword)
 
 module.exports = router

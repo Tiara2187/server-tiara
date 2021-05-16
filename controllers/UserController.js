@@ -48,15 +48,27 @@ class UserController {
        const {username, firstname, lastname, password, birthdate, address} = req.body
        const salt = bcrypt.genSaltSync(10)
        try{
-           const userData = {username, firstname, lastname, password, birthdate, address}
-           if(password)userData.password = await bcrypt.hashSync(userData.password,salt)
-           for(let i in userData) if(!userData[i]) delete userData[i]
-           const { id } = req.params
-           const updateProfile = await User.findByIdAndUpdate(id, userData,{new: true})
-           res.status(200).json({success : true, data : updateProfile })
+           const newData = {username, firstname, lastname, password, birthdate, address}
+           if(password)newData.password = await bcrypt.hashSync(newData.password,salt)
+           for(let key in newData) if(!newData[key]) delete newData[key]
+           const profileData = await User.findByIdAndUpdate(req._userId, newData,{new: true})
+           res.status(200).json({success : true, data : profileData })
        }
-       catch(any) { next({name: 'NOT_FOUND'})}
+       catch(e) { next({name: 'NOT_FOUND'})}
    }
+
+    static async updateUser(req,res,next) {
+        const {username, firstname, lastname, password, birthdate, address} = req.body
+        const salt = bcrypt.genSaltSync(10)
+        try{
+        const newData = {username, firstname, lastname, password, birthdate, address}
+        if(password)newData.password = await bcrypt.hashSync(newData.password,salt)
+        for(let key in newData) if(!newData[key]) delete newData[key]
+        const updateUser = await User.findByIdAndUpdate(req._userId,newData,{new : true })
+        res.status(200).json({success : true , data : updateUser })
+        }
+        catch (e) { next({name: 'NOT_FOUND'}) }
+    }
 
    static async forgetPassword(req, res, next){
     const { username, password, email } = req.body
