@@ -44,31 +44,18 @@ class UserController {
         catch(any) { next({name: 'NOT_FOUND'}) }
    }
    
-   static async updateProfile(req,res,next) {
-       const {username, firstname, lastname, password, birthdate, address} = req.body
-       const salt = bcrypt.genSaltSync(10)
-       try{
-           const newData = {username, firstname, lastname, password, birthdate, address}
-           if(password)newData.password = await bcrypt.hashSync(newData.password,salt)
-           for(let key in newData) if(!newData[key]) delete newData[key]
-           const profileData = await User.findByIdAndUpdate(req._userId, newData,{new: true})
-           res.status(200).json({success : true, data : profileData })
-       }
-       catch(e) { next({name: 'NOT_FOUND'})}
-   }
-
-    static async updateUser(req,res,next) {
-        const {username, firstname, lastname, password, birthdate, address} = req.body
-        const salt = bcrypt.genSaltSync(10)
-        try{
-        const newData = {username, firstname, lastname, password, birthdate, address}
-        if(password)newData.password = await bcrypt.hashSync(newData.password,salt)
-        for(let key in newData) if(!newData[key]) delete newData[key]
-        const updateUser = await User.findByIdAndUpdate(req._userId,newData,{new : true })
-        res.status(200).json({success : true , data : updateUser })
-        }
-        catch (e) { next({name: 'NOT_FOUND'}) }
+   static async updateUser(req,res,next) {
+    const {username,password,firstname,lastname,address,birthdate} = req.body
+    const salt = bcrypt.genSaltSync(10)
+    try{
+    const newData = {username,password,firstname,lastname,address,birthdate}
+    if(password)newData.password = await bcrypt.hashSync(newData.password,salt)
+    for(let key in newData) if(!newData[key]) delete newData[key]
+    const updateUser = await User.findByIdAndUpdate(req._userId,newData,{new : true })
+    res.status(200).json({success : true , data : updateUser })
     }
+    catch (e) { next({name: 'NOT_FOUND'}) }
+}
 
    static async forgetPassword(req, res, next){
     const { username, password, email } = req.body
